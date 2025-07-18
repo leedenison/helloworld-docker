@@ -10,6 +10,7 @@ services:
         POSTGRES_GID: ${POSTGRES_GID:-1100}
     container_name: service-init
     volumes:
+      - ../external/${SERVICE_NAME}:/opt/service/src
       - /tmp/${SERVICE_NAME}/data:/var/lib/postgresql/17/main
     environment:
       - POSTGRES_DATA_DIR=/var/lib/postgresql/17/main
@@ -37,7 +38,7 @@ services:
       - "50001:50001"
       - "5432:5432"
     volumes:
-      - ../external/$(SERVICE_NAME):/opt/service/src
+      - ../external/${SERVICE_NAME}:/opt/service/src
       - /tmp/${SERVICE_NAME}/data:/var/lib/postgresql/17/main
       - /tmp/${SERVICE_NAME}/logs/postgresql:/var/log/postgresql
     environment:
@@ -57,7 +58,7 @@ services:
         POSTGRES_GID: ${POSTGRES_GID:-1100}
     container_name: service-test
     volumes:
-      - ../external/$(SERVICE_NAME):/opt/service/src
+      - ../external/${SERVICE_NAME}:/opt/service/src
       - /tmp/${SERVICE_NAME}/logs/test:/tmp/service/logs/test
     environment:
       - POSTGRES_DATA_DIR=/var/lib/postgresql/17/main

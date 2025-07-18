@@ -14,8 +14,21 @@ start_postgres() {
     # Create log directory if it doesn't exist
     mkdir -p "$POSTGRES_LOG_DIR"
     
-    # Start PostgreSQL cluster
-    pg_ctlcluster 17 main start
+    # Check if cluster already exists in the data directory
+    if [ -f "$POSTGRES_DATA_DIR/PG_VERSION" ]; then
+        echo "PostgreSQL cluster already exists in $POSTGRES_DATA_DIR"
+        # Start the cluster using the custom data directory
+        su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D $POSTGRES_DATA_DIR start" || {
+            echo "Starting existing PostgreSQL cluster..."
+        }
+    else
+        echo "Creating new PostgreSQL cluster in $POSTGRES_DATA_DIR"
+        # Initialize new cluster in the mounted volume
+        su postgres -c "/usr/lib/postgresql/17/bin/initdb -D $POSTGRES_DATA_DIR --encoding=UTF8 --locale=C"
+        
+        # Start the cluster
+        su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D $POSTGRES_DATA_DIR start"
+    fi
     
     # Wait for PostgreSQL to be ready
     echo "Waiting for PostgreSQL to be ready..."
@@ -30,7 +43,7 @@ start_postgres() {
 # Function to stop PostgreSQL
 stop_postgres() {
     echo "Stopping PostgreSQL..."
-    pg_ctlcluster 17 main stop
+    su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D $POSTGRES_DATA_DIR stop" || true
     echo "PostgreSQL stopped"
 }
 

@@ -43,3 +43,5 @@ Cargo.lock
 # Backup files
 *.backup
 *.old
+
+external/helloworld/target/

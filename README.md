@@ -1,6 +1,5 @@
 # Docker Development Environment
 
-
 ## Prerequisites
 
 - Docker
@@ -47,26 +46,6 @@
 - `make clean-all` - Clean all artifacts (does not delete the database)
 - `make status` - Show current build status
 
-## Development Workflow
-
-1. **Initialize database:**
-   ```bash
-   make init-db
-   ```
-
-2. **Start development environment:**
-   ```bash
-   make run
-   ```
-   This starts the development container with hot reloading enabled. Source code changes will automatically trigger rebuilds and restarts.  Check progress with `make logs`
-
-
-   The development environment uses cargo-watch to automatically:
-   - Watch for source code changes
-   - Rebuild the project when changes are detected
-   - Restart the gRPC server automatically
-   - No manual restarts required
-
 ## Ports
 
 - **gRPC**: localhost:50001
@@ -80,11 +59,4 @@ To override the default UID/GID, use Docker build arguments:
 
 ## Service Name Configuration
 
-### Override via .env file
-
-Create a `.env` file in the project root to set a custom service name:
-
-```bash
-# .env
-SERVICE_NAME=myapp
-```
+Change the service name using the SERVICE_NAME variable in the Makefile.

@@ -91,13 +91,13 @@ FROM base AS prod
 RUN mkdir -p /var/lib/postgresql/data
 
 # Copy the Service binary
-COPY bin/$(SERVICE_NAME) /opt/service/$(SERVICE_NAME)
+COPY bin/${SERVICE_NAME} /opt/service/${SERVICE_NAME}
 
 # Create a non-root user
-RUN useradd -r -s /bin/false $(SERVICE_NAME) && \
-    chown -R $(SERVICE_NAME):$(SERVICE_NAME) /opt/service
+RUN useradd -r -s /bin/false ${SERVICE_NAME} && \
+    chown -R ${SERVICE_NAME}:${SERVICE_NAME} /opt/service
 
-USER $(SERVICE_NAME)
+USER ${SERVICE_NAME}
 
 EXPOSE 50001
 

@@ -129,6 +129,9 @@ run_migrations() {
         done
     else
         echo "Migrations directory not found: $MIGRATIONS_DIR"
+        echo "Expected migrations in: /opt/service/src/migrations/"
+        echo "Available migrations in: /opt/service/src/"
+        ls -la /opt/service/src/ 2>/dev/null || echo "Source directory not accessible"
     fi
     echo "All migrations applied."
 }
